@@ -31,4 +31,11 @@ public interface UserService {
      * @return 用户集
      */
     List<User> findUser(Map<String, Object> condition);
+
+    /**
+     * 根据id查询用户信息
+     * @param userId
+     * @return
+     */
+    User findUserById(Integer userId);
 }

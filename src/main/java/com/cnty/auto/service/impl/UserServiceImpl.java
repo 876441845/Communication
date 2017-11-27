@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,4 +37,13 @@ public class UserServiceImpl implements UserService {
     public List<User> findUser(Map<String, Object> condition) {
         return userDAO.select(condition);
     }
+
+    @Override
+    public User findUserById(Integer userId) {
+        Map<String, Object> condition = new HashMap<>(16);
+        condition.put("userId", userId);
+        return userDAO.select(condition) == null ? null : userDAO.select(condition).get(0);
+    }
+
+
 }

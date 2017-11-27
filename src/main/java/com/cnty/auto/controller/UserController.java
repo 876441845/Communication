@@ -33,6 +33,13 @@ public class UserController {
         return ResultFormatter.formatResult(200, "SUCCESS", result);
     }
 
+    @GetMapping("/{userId}")
+    public Map<String,Object> showUserById(@PathVariable Integer userId){
+        Map<String,Object> result = new HashMap<>(16);
+        result.put("user", userService.findUserById(userId));
+        return ResultFormatter.formatResult(200, "SUCCESS", result);
+    }
+
     @PostMapping
     public Map<String,Object> addUser(@RequestBody User user){
         int result = userService.saveUser(user);
