@@ -16,9 +16,9 @@ import lombok.ToString;
 @ToString
 public class Rail {
 
-    private Integer rail_id;
-    private Integer machine_id;
-    private Integer goods_id;
-    private Integer goods_num;
+    private Integer railId;
+    private Integer machineId;
+    private Integer goodsId;
+    private Integer goodsNum;
 
 }

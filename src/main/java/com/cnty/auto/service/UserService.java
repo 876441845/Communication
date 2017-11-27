@@ -1,5 +1,12 @@
 package com.cnty.auto.service;
 
+import com.cnty.auto.dao.UserDAO;
+import com.cnty.auto.pojo.User;
+
+import java.security.PrivateKey;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -10,4 +17,18 @@ package com.cnty.auto.service;
  * Description:
  */
 public interface UserService {
+
+    /**
+     * 保存用户信息
+     * @param user 用户实体
+     * @return 影响的行数
+     */
+    int saveUser(User user);
+
+    /**
+     * 根据条件查询用户
+     * @param condition
+     * @return 用户集
+     */
+    List<User> findUser(Map<String, Object> condition);
 }

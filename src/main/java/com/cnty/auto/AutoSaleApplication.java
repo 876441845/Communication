@@ -1,7 +1,9 @@
 package com.cnty.auto;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Description:
  */
 @SpringBootApplication
+@EnableTransactionManagement
+@MapperScan("com.cnty.auto.dao")
 public class AutoSaleApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AutoSaleApplication.class, args);

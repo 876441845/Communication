@@ -16,9 +16,9 @@ import lombok.ToString;
 @ToString
 public class Goods {
 
-    private Integer goods_id;
-    private String goods_name;
-    private double goods_price;
-    private Integer goods_cost_points;
+    private Integer goodsId;
+    private String goodsName;
+    private double goodsPrice;
+    private Integer goodsCostPoints;
 
 }

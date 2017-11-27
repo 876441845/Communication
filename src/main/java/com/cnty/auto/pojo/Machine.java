@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class Machine {
 
-    private Integer machine_id;
-    private String machine_location;
+    private Integer machineId;
+    private String machineLocation;
 
 }

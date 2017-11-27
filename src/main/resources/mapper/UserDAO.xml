@@ -1,5 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cnty.auto.dao">
+<mapper namespace="com.cnty.auto.dao.UserDAO">
+
+    <insert id="insert" parameterType="User">
+        INSERT INTO user (user_name, user_password) VALUES (#{userName}, #{userPassword});
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM user
+        WHERE user_id = #{id}
+    </delete>
+
+    <update id="update" parameterType="User">
+        UPDATE user
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                user_password = #{userPassword},
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="User">
+        SELECT user_id,user_name,user_password FROM user
+        <where>
+            <if test="userId != null and userId != 0">
+                AND user_id = #{userId}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
 
 </mapper>

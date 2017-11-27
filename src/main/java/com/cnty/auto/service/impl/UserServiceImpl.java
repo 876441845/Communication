@@ -1,6 +1,14 @@
 package com.cnty.auto.service.impl;
 
+import com.cnty.auto.dao.UserDAO;
+import com.cnty.auto.pojo.User;
 import com.cnty.auto.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,5 +19,21 @@ import com.cnty.auto.service.UserService;
  * @version: X
  * Description:
  */
+@Service
 public class UserServiceImpl implements UserService {
+    @Resource
+    private UserDAO userDAO;
+
+    @Override
+    public int saveUser(User user) {
+        // 对密码进行加密
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setUserPassword(encoder.encode(user.getUserPassword()));
+        return userDAO.insert(user);
+    }
+
+    @Override
+    public List<User> findUser(Map<String, Object> condition) {
+        return userDAO.select(condition);
+    }
 }
