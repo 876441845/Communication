@@ -1,5 +1,8 @@
 package com.cnty.auto.pojo;
 
+import lombok.Data;
+import lombok.ToString;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -9,5 +12,12 @@ package com.cnty.auto.pojo;
  * @version: X
  * Description:
  */
+@Data
+@ToString
 public class Role {
+
+    private Integer role_id;
+    private String role_name;
+    private String role_description;
+
 }

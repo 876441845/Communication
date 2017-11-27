@@ -1,5 +1,8 @@
 package com.cnty.auto.dao;
 
+import com.cnty.auto.pojo.Goods;
+import org.springframework.stereotype.Repository;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -9,5 +12,6 @@ package com.cnty.auto.dao;
  * @version: X
  * Description:
  */
-public interface GoodsDAO {
+@Repository
+public interface GoodsDAO extends BaseDAO<Goods> {
 }

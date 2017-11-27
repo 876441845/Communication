@@ -1,5 +1,8 @@
 package com.cnty.auto.pojo;
 
+import lombok.Data;
+import lombok.ToString;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -9,5 +12,13 @@ package com.cnty.auto.pojo;
  * @version: X
  * Description:
  */
+@Data
+@ToString
 public class Goods {
+
+    private Integer goods_id;
+    private String goods_name;
+    private double goods_price;
+    private Integer goods_cost_points;
+
 }
