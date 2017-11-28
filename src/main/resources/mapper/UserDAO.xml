@@ -39,4 +39,15 @@
         </if>
     </select>
 
+    <!--角色授予-->
+    <insert id="grantRole">
+        INSERT INTO user_role (user_id, role_id) VALUES (#{user.userId}, #{role.roleId});
+    </insert>
+
+    <!--角色撤销-->
+    <delete id="revokeRole">
+        DELETE FROM user_role
+        WHERE user_id = #{user.userId} AND role_id = #{role.roleId}
+    </delete>
+
 </mapper>

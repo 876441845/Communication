@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnty.auto.dao.RailDAO">
+    <insert id="insert" parameterType="Rail">
+        INSERT INTO rail (rail_id, machine_id, goods_id, goods_num)
+        VALUES (#{railId}, #{machineId}, #{goodsId}, #{goodsNum})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM rail WHERE machine_id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Rail">
+        UPDATE rail
+        <set>
+            <if test="goodsId != null and goodsId > 0">goods_id = #{goodsId},</if>
+            <if test="goodsNum != null and goodsNum >= 0">goods_num = #{goodsNum},</if>
+        </set>
+        WHERE rail_id = #{railId} AND machine_id = #{machineId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="Rail">
+        SELECT rail_id,machine_id,goods_id,goods_num FROM rail
+        <where>
+            <if test="machineId != null and machineId > 0">AND machine_id = #{machineId}</if>
+            <if test="goodsId != null and goodsId > 0">AND goods_id = #{goodsId}</if>
+            <if test="goodsNum != null and goodsNum >= 0">AND goods_num = #{goodsNum}</if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+</mapper>
