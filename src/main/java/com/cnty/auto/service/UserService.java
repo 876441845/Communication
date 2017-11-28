@@ -1,6 +1,7 @@
 package com.cnty.auto.service;
 
 import com.cnty.auto.dao.UserDAO;
+import com.cnty.auto.pojo.Role;
 import com.cnty.auto.pojo.User;
 
 import java.security.PrivateKey;
@@ -27,7 +28,7 @@ public interface UserService {
 
     /**
      * 根据条件查询用户
-     * @param condition
+     * @param condition User的键值对对象+offset和limit
      * @return 用户集
      */
     List<User> findUser(Map<String, Object> condition);
@@ -45,4 +46,20 @@ public interface UserService {
      * @return 影响的行数
      */
     int deleteUser(Integer userId);
+
+    /**
+     * 授予用户角色
+     * @param user 需要包含userId
+     * @param role 需要包含roleId
+     * @return
+     */
+    int grantRole(User user,Role role);
+
+    /**
+     * 撤销用户角色
+     * @param user 需要包含userId
+     * @param role 需要包含roleId
+     * @return
+     */
+    int revokeRole(User user,Role role);
 }
