@@ -14,7 +14,7 @@ import java.util.Map;
  * @date: 2017/11/24 17:24
  * @since: JDK1.8.0_144
  * @version: X
- * Description:
+ * Description: UserService Interface
  */
 public interface UserService {
 
@@ -38,4 +38,11 @@ public interface UserService {
      * @return
      */
     User findUserById(Integer userId);
+
+    /**
+     * 删除用户
+     * @param userId
+     * @return 影响的行数
+     */
+    int deleteUser(Integer userId);
 }

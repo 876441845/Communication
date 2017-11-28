@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnty.auto.dao.GoodsDAO">
+
+    <insert id="insert" parameterType="Goods">
+        INSERT INTO goods (goods_name, goods_price, goods_cost_points)
+        VALUES (#{goodsName}, #{goodsPrice}, #{goodsCostPoints})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM goods
+        WHERE goods_id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Goods">
+        UPDATE goods
+        <set>
+            <if test="goodsName != null and goodsName != ''">goods_name = #{goodsName},</if>
+            <if test="goodsPrice != null and goodsPrice >= 0">goods_price = #{goodsPrice},</if>
+            <if test="goodsCostPoints != null and goodsCostPoints >= 0">goods_cost_points = #{goodsCostPoints},</if>
+        </set>
+        WHERE goods_id = #{goodsId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="Goods">
+        SELECT
+        goods_id,
+        goods_name,
+        goods_price,
+        goods_cost_points
+        FROM goods
+        <where>
+            <if test="goodsId != null and goodsId != 0">AND goods_id = #{goodsId}</if>
+            <if test="goodsName != null and goodsName != ''">AND goods_name = #{goodsName}</if>
+            <if test="goodsPrice != null and goodsPrice >= 0">AND goods_price = #{goodsPrice}</if>
+            <if test="goodsCostPoints != null and goodsCostPoints >= 0">AND goods_cost_points = #{goodsCostPoints}</if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+</mapper>

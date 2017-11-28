@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnty.auto.dao.MachineDAO">
+
+    <insert id="insert" parameterType="Machine">
+        INSERT INTO machine (machine_location) VALUES (#{machineLocation})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM machine WHERE machine_id = #{machineId}
+    </delete>
+
+    <update id="update" parameterType="Machine">
+        UPDATE machine
+        <set>
+            <if test="machineLocation != null and machineLocation != ''">machine_location = #{machineLocation},</if>
+        </set>
+      WHERE machine_id = #{machineId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="Machine">
+        SELECT machine_id,machine_location FROM machine
+        <where>
+            <if test="machineId != null and machineId != 0">AND machine_id = #{machineId}</if>
+            <if test="machineLocation != null and machineLocation != ''">AND machine_location = #{machineLocation}</if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+</mapper>

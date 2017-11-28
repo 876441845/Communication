@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnty.auto.dao.RoleDAO">
+
+    <insert id="insert" parameterType="Role">
+        INSERT INTO role (role_name, role_description) VALUES (#{roleName}, #{roleDescription})
+    </insert>
+
+    <delete id="delete">
+        DELETE FROM role
+        WHERE role_id = #{roleId}
+    </delete>
+
+    <update id="update" parameterType="Role">
+        UPDATE role
+        <set>
+            <if test="roleName != null and roleName != ''">role_name = #{roleName},</if>
+            <if test="roleDescription != null and roleDescription != ''">role_description = #{roleDescription},</if>
+        </set>
+        WHERE role_id = #{roleId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="Role">
+        SELECT role_id,role_name,role_description FROM role
+        <where>
+            <if test="roleId != null and roleId != 0">AND role_id = #{roleId}</if>
+            <if test="roleName != null and roleName != ''">AND role_name = #{roleName}</if>
+            <if test="roleDescription != null and roleDescription != ''">AND role_description = #{roleDescription}</if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
+
+</mapper>

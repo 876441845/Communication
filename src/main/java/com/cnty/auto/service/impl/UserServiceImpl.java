@@ -27,8 +27,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int saveUser(User user) {
+        Integer id = user.getUserId();
         // 对密码进行加密
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        if (id != null && id != 0){
+            //  更新
+            String password = user.getUserPassword();
+            if (password!=null&&!"".equals(password)){
+                user.setUserPassword(encoder.encode(user.getUserPassword()));
+            }
+            return userDAO.update(user);
+        }
+        // 添加
         user.setUserPassword(encoder.encode(user.getUserPassword()));
         return userDAO.insert(user);
     }
@@ -43,6 +53,11 @@ public class UserServiceImpl implements UserService {
         Map<String, Object> condition = new HashMap<>(16);
         condition.put("userId", userId);
         return userDAO.select(condition) == null ? null : userDAO.select(condition).get(0);
+    }
+
+    @Override
+    public int deleteUser(Integer userId) {
+        return userDAO.delete(userId);
     }
 
 
