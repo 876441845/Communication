@@ -10,7 +10,7 @@ import java.util.Map;
  * @date: 2017/11/27 10:42
  * @since: JDK1.8.0_144
  * @version: X
- * Description:
+ * Description: 格式化返回给前端的数据
  */
 public class ResultFormatter {
 

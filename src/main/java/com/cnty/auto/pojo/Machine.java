@@ -10,13 +10,19 @@ import lombok.ToString;
  * @date: 2017/11/24 17:21
  * @since: JDK1.8.0_144
  * @version: X
- * Description:
+ * Description: 存储机器信息
  */
 @Data
 @ToString
 public class Machine {
 
+    /**
+     * 机器ID
+     */
     private Integer machineId;
+    /**
+     * 机器放置地点
+     */
     private String machineLocation;
 
 }
