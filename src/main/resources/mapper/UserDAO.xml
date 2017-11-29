@@ -3,7 +3,7 @@
 <mapper namespace="com.cnty.auto.dao.UserDAO">
 
     <insert id="insert" parameterType="User">
-        INSERT INTO user (user_name, user_password) VALUES (#{userName}, #{userPassword});
+        INSERT INTO user (user_name, user_password, user_card_id) VALUES (#{userName}, #{userPassword}, #{userCardId});
     </insert>
 
     <delete id="delete">
@@ -25,10 +25,13 @@
     </update>
 
     <select id="select" parameterType="map" resultType="User">
-        SELECT user_id,user_name,user_password FROM user
+        SELECT user_id,user_card_id,user_password FROM user
         <where>
             <if test="userId != null and userId != 0">
                 AND user_id = #{userId}
+            </if>
+            <if test="userCardId != null and userCardId != ''">
+                AND user_card_id = #{userCardId}
             </if>
             <if test="userName != null and userName != ''">
                 AND user_name = #{userName}

@@ -8,9 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,6 +39,14 @@ public class UserServiceImpl implements UserService {
         }
         // 添加
         user.setUserPassword(encoder.encode(user.getUserPassword()));
+        Random random = new Random();
+        StringBuilder cardId = new StringBuilder();
+        int cardIdLength = 20;
+        // 不考虑重复的概率,10^20概率已经很低了
+        for (int i = 0; i < cardIdLength; i++) {
+            cardId.append(random.nextInt(10));
+        }
+        user.setUserCardId(cardId.toString());
         return userDAO.insert(user);
     }
 

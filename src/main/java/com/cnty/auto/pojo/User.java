@@ -21,6 +21,10 @@ public class User {
      */
     private Integer userId;
     /**
+     * 用户卡号
+     */
+    private String userCardId;
+    /**
      * 用户名称
      */
     private String userName;
