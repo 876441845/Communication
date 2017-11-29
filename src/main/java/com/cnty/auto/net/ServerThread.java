@@ -240,7 +240,7 @@ public class ServerThread implements Runnable {
                                         break;
                                     case "S":
                                         // 设备状态
-                                        cmdS = value;
+                                        cmdS = value;   
                                         break;
                                     case "T":
                                         cmdT = Double.parseDouble(value) / 10;
