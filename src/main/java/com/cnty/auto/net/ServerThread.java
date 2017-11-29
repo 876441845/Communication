@@ -25,6 +25,7 @@ public class ServerThread implements Runnable {
 
     /**
      * 构造方法
+     *
      * @param socket 连接进入的套接字
      */
     ServerThread(Socket socket) {
@@ -65,37 +66,39 @@ public class ServerThread implements Runnable {
                     //用户
                     User user;
                     //各个子筒的称重
-                    double cmdA,cmdB,cmdC,cmdD,cmdE,cmdF,cmdG,cmdH;
+                    Double cmdA, cmdB, cmdC, cmdD, cmdE, cmdF, cmdG, cmdH;
                     //用户id
-                    int userId = 0;
+                    Integer userId = null;
                     //本次积分
-                    String cmdJ = null;
+                    Double cmdJ = null;
                     //垃圾袋种类
-                    int cmdK;
+                    Integer cmdK = null;
                     //垃圾袋编号
                     String cmdL = null;
                     //兑换机货道
-                    int cmdM;
+                    Integer cmdM;
                     //垃圾类别
-                    int cmdO;
+                    Integer cmdO;
                     //密码
-                    String cmdP=null;
+                    String cmdP = null;
                     //数量
-                    int cmdQ;
+                    Integer cmdQ = null;
                     //状态码
                     String cmdS = null;
                     //温度
-                    double cmdT = 0;
+                    Double cmdT = null;
                     //用户名
                     String cmdU = null;
+                    //订单编号
+                    String cmdV = null;
                     //单次记重
-                    double cmdW = 0;
+                    Double cmdW = null;
                     //GPS定位坐标
                     String cmdX;
                     //GPS定位坐标
                     String cmdY;
                     //总积分
-                    double cmdZ = 0;
+                    Double cmdZ = null;
                     //操作是否成功
                     boolean isOk = true;
                     //判断机器是否存在
@@ -106,7 +109,7 @@ public class ServerThread implements Runnable {
                                 String value = data.substring(key.length());
                                 switch (key) {
                                     case "J":
-                                        cmdJ = value;
+                                        cmdJ = Double.parseDouble(value);
                                         break;
                                     case "K":
                                         cmdK = Integer.parseInt(value);
@@ -119,7 +122,7 @@ public class ServerThread implements Runnable {
                                         break;
                                     case "N":
                                         //判断是否为用户卡号
-                                        if("00".equals(value.substring(0,2))){
+                                        if ("00".equals(value.substring(0, 2))) {
                                             // 判断是否存在用户
                                             if ("00000000000000000001".equals(value)) {
                                                 //存在
@@ -135,24 +138,24 @@ public class ServerThread implements Runnable {
                                                     result += (",R0,O" + cmdO + ",I" + userId + "," + key + value);
                                                 }
                                                 //获取用户当前积分
-                                                cmdZ=1000;
+                                                cmdZ = 1000.0;
                                                 // 判断是否为垃圾袋编号
-                                            }else {
+                                            } else {
                                                 //用户不存在
                                                 result += (",R1");
                                                 isOk = false;
                                                 break;
                                             }
-                                        }else{
-                                            if("01000000000000000001".equals(value) && "TYZ".equals(type)){
+                                        } else {
+                                            if ("01000000000000000001".equals(value) && "TYZ".equals(type)) {
                                                 //获取用户id
                                                 userId = 1;
                                                 //根据01类垃圾袋查找垃圾桶对应的开门号
                                                 cmdO = 1;
                                                 //用户当前积分
-                                                cmdZ=1000;
+                                                cmdZ = 1000.0;
                                                 result += (",R0,O" + cmdO + ",I" + userId + "," + key + value);
-                                            }else{
+                                            } else {
                                                 isOk = false;
                                                 break;
                                             }
@@ -168,8 +171,14 @@ public class ServerThread implements Runnable {
                                         // 设备状态
                                         cmdS = value;
                                         break;
+                                    case "T":
+                                        cmdT = Double.parseDouble(value);
+                                        break;
                                     case "U":
                                         cmdU = value;
+                                        break;
+                                    case "V":
+                                        cmdV = value;
                                         break;
                                     case "W":
                                         // 单次记重
@@ -234,7 +243,7 @@ public class ServerThread implements Runnable {
                                         cmdS = value;
                                         break;
                                     case "T":
-                                        cmdT = Double.parseDouble(value)/10;
+                                        cmdT = Double.parseDouble(value) / 10;
                                         break;
                                     case "X":
                                         // 定位数据1(10位String)
@@ -254,13 +263,43 @@ public class ServerThread implements Runnable {
                     }
                     if (isOk) {
                         if ("TYF".equals(type)) {
-                            if (userId != 0 && cmdL != null) {
-                                //用户与垃圾袋二维码绑定
+                            if ("A".equals(action)) {
+                                if (userId != null && cmdL != null) {
+                                    //用户与垃圾袋二维码绑定
+                                    result += (",R0,L" + cmdL);
+                                }
+                                if (userId != null && cmdL == null && cmdK != null) {
+                                    if (cmdV == null && cmdQ != null && cmdT != null) {
+                                        //添加用户领取垃圾袋记录
+                                        result += (",R0,K" + cmdK);
+                                    } else if (cmdV != null) {
+                                        if (!"TYF1000000120171129103021".equals(cmdV)) {
+                                            //数据库垃圾袋数量进行修改
+                                        }
+                                        result += (",R0,V" + cmdV);
+                                    } else if (cmdK != null) {
+                                        result += (",R0,K" + cmdK);
+                                    }
+                                }
+                                //补货员登录
+                                if (cmdU != null && cmdP != null) {
+                                    //判断账户密码是否正确
+                                    if ("admin".equals(cmdU) && "123456".equals(cmdP)) {
+                                        result += (",R0,U" + cmdU);
+                                    } else {
+                                        result += (",R1");
+                                    }
+                                }
+                                //申请补货
+                                if (cmdU != null && cmdK != null && cmdQ != null) {
+                                    //修改发袋机对应种类垃圾袋库存
 
-                                result += (",R0");
-                            }
-                            if (userId != 0 && cmdL == null) {
-                                //添加用户领取垃圾袋记录
+                                    result += (",R0");
+                                }
+                            } else if ("B".equals(action)) {
+                                if (cmdK != null && cmdQ != null) {
+                                    //核对发袋机与服务器的数据
+                                }
                             }
                         } else if ("TYD".equals(type)) {
                             if (cmdS != null) {
@@ -269,12 +308,12 @@ public class ServerThread implements Runnable {
                             if (cmdJ == null) {
                                 result += (",R0");
                             }
-                            if (userId != 0 && cmdW != 0 && cmdJ != null) {
+                            if (userId != null && cmdW != null && cmdJ != null) {
                                 // 根据兑换机改货道商品所需商品积分是否足够
                                 //if () {
                                 result += (",R0");
                                 //计算总积分
-                                cmdZ -= Double.parseDouble(cmdJ);
+                                cmdZ -= cmdJ;
                                 //更新总积分
                                 // 订单编号 用户id 商品id 数量 总价 订单状态
                                 // 根据时间生成 userId cmdW 1 cmdJ 8
@@ -285,15 +324,15 @@ public class ServerThread implements Runnable {
                                 //}
                                 result += (",cmdJ" + cmdJ + ",cmdZ" + cmdZ);
                             }
-                        }else if ("TYZ".equals(type)) {
+                        } else if ("TYZ".equals(type)) {
                             if (cmdS != null) {
                                 //更新智能设备状态
                             }
-                            if (userId != 0 && cmdT != 0) {
+                            if (userId != null && cmdT != null) {
                                 //计算本次产生积分
                                 result += (",cmdJ" + cmdJ);
                                 //计算总积分
-                                cmdZ += Double.parseDouble(cmdJ);
+                                cmdZ += cmdJ;
                                 //更新积分
                                 result += (",cmdZ" + cmdZ);
                                 // 机器id 用户id 回收物品id 重量 时间 所得积分
@@ -301,8 +340,8 @@ public class ServerThread implements Runnable {
                                 // 将数据保存至垃圾回收表
                             }
                         }
-                        result += ";";
                     }
+                    result += ";";
                     if (isOk) {
                         //请求成功
                     } else {
@@ -314,7 +353,7 @@ public class ServerThread implements Runnable {
                         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                         System.out.println("请求：" + cmd);
                         System.out.println("响应：" + result);
-                    }else if("B".equals(action)){
+                    } else if ("B".equals(action)) {
                         System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
                         System.out.println("汇报：" + cmd);
                     }
