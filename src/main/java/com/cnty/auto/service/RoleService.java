@@ -18,6 +18,7 @@ public interface RoleService {
 
     /**
      * 保存角色信息
+     *
      * @param role
      * @return
      */
@@ -25,13 +26,15 @@ public interface RoleService {
 
     /**
      * 根据条件查询Role
+     *
      * @param condition Role的键值对对象+offset和limit
      * @return
      */
-    List<Role> findRole(Map<String,Object> condition);
+    List<Role> findRole(Map<String, Object> condition);
 
     /**
      * 根据id查询Role
+     *
      * @param roleId
      * @return
      */
@@ -39,6 +42,7 @@ public interface RoleService {
 
     /**
      * 根据id删除Role
+     *
      * @param roleId
      * @return
      */

@@ -18,6 +18,7 @@ public interface RailService {
 
     /**
      * 保存货轨的信息
+     *
      * @param rail
      * @return
      */
@@ -25,21 +26,24 @@ public interface RailService {
 
     /**
      * 根据条件查询Rail
+     *
      * @param condition Rail的键值对对象+offset和limit
      * @return
      */
-    List<Rail> findRail(Map<String,Object> condition);
+    List<Rail> findRail(Map<String, Object> condition);
 
     /**
      * 根据联合主键查询Rail
+     *
      * @param railId
      * @param machineId
      * @return
      */
-    Rail findRailById(Integer railId,Integer machineId);
+    Rail findRailById(Integer railId, Integer machineId);
 
     /**
      * 删除该机器的所有货轨信息
+     *
      * @param machineId
      * @return
      */

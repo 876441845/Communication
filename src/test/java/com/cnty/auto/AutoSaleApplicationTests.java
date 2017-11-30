@@ -11,6 +11,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,6 +46,13 @@ public class AutoSaleApplicationTests {
         // Date date = Calendar.getInstance().getTime();
         // String time_str = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(date);
         System.out.println("time_str = " + time_str);
+        
+        StringBuilder sb = new StringBuilder(time_str);
+        Random random = new Random();
+        for (int i = 0; i < 6; i++) {
+            sb.append(random.nextInt(10));
+        }
+        System.out.println("sb = " + sb);
     }
 
 

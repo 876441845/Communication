@@ -18,6 +18,7 @@ public interface MachineService {
 
     /**
      * 保存机器信息
+     *
      * @param machine
      * @return
      */
@@ -25,13 +26,15 @@ public interface MachineService {
 
     /**
      * 根据条件查询Machine
+     *
      * @param condition Machine的键值对对象+offset和limit
      * @return
      */
-    List<Machine> findMachine(Map<String,Object> condition);
+    List<Machine> findMachine(Map<String, Object> condition);
 
     /**
      * 根据id产讯Machine
+     *
      * @param machineId
      * @return
      */
@@ -39,6 +42,7 @@ public interface MachineService {
 
     /**
      * 删除机器信息
+     *
      * @param machineId
      * @return
      */

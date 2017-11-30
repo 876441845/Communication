@@ -37,7 +37,7 @@ public class Order {
     /**
      * 订单花费
      */
-    private double orderCost;
+    private Double orderCost;
     /**
      * 订单花费
      */

@@ -1,5 +1,8 @@
 package com.cnty.auto.pojo;
 
+import lombok.Data;
+import lombok.ToString;
+
 import java.util.Date;
 
 /**
@@ -11,6 +14,8 @@ import java.util.Date;
  * @version: X
  * Description:
  */
+@Data
+@ToString
 public class Bag {
 
     /**
@@ -24,7 +29,7 @@ public class Bag {
     /**
      * 垃圾袋重量
      */
-    private double bagWeight;
+    private Double bagWeight;
     /**
      * 垃圾袋所属用户ID
      */
