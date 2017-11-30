@@ -45,7 +45,7 @@ public interface UserService {
      * @param cardId
      * @return
      */
-    User findUserByCardId(Integer cardId);
+    User findUserByCardId(String cardId);
 
     /**
      * 删除用户

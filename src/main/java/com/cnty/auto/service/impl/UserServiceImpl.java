@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserByCardId(Integer cardId) {
+    public User findUserByCardId(String cardId) {
         Map<String, Object> condition = new HashMap<>(16);
         condition.put("cardId", cardId);
         List<User> userList = userDAO.select(condition);
