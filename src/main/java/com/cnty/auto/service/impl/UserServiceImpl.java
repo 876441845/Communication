@@ -64,6 +64,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByCardId(Integer cardId) {
+        Map<String, Object> condition = new HashMap<>(16);
+        condition.put("cardId", cardId);
+        List<User> userList = userDAO.select(condition);
+        return (userList == null || userList.size() == 0) ? null : userList.get(0);
+    }
+
+    @Override
     public int deleteUser(Integer userId) {
         return userDAO.delete(userId);
     }

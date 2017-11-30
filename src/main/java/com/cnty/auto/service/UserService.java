@@ -41,6 +41,13 @@ public interface UserService {
     User findUserById(Integer userId);
 
     /**
+     * 根据cardId查询用户信息
+     * @param cardId
+     * @return
+     */
+    User findUserByCardId(Integer cardId);
+
+    /**
      * 删除用户
      * @param userId
      * @return 影响的行数
