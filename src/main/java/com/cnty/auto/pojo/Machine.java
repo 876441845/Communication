@@ -21,6 +21,10 @@ public class Machine {
      */
     private Integer machineId;
     /**
+     * 机器类型
+     */
+    private Integer machineType;
+    /**
      * 机器放置地点
      */
     private String machineLocation;

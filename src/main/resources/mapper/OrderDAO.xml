@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cnty.auto.dao.OrderDAO">
+    <insert id="insert" parameterType="Order">
+        INSERT INTO `order` (order_id, user_id, goods_id, goods_num, order_cost, order_state, gmt_create)
+        VALUES (#{orderId}, #{userId}, #{goodsId}, #{goodsNum}, #{orderCost}, #{orderState}, #{gmtCreate})
+    </insert>
 
+    <delete id="delete">
+        DELETE FROM `order`
+        WHERE order_id = #{id}
+    </delete>
+
+    <update id="update" parameterType="Order">
+        UPDATE `order`
+        <set>
+            <if test="orderState != null and orderState >= 0">order_state = #{orderState},</if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+
+    <select id="select" parameterType="map" resultType="Order">
+        SELECT order_id, user_id, goods_id, goods_num, order_cost, order_state, gmt_create,gmt_modified FROM `order`
+        <where>
+            <if test="orderId != null and orderId != ''">AND order_id = #{orderId}</if>
+            <if test="userId != null and userId != 0">AND user_id = #{userId}</if>
+            <if test="goodsId != null and goodsId != 0">AND goods_id = #{goodsId}</if>
+            <if test="goodsNum != null and goodsNum >= 0">AND goods_num = #{goodsNum}</if>
+            <if test="orderCost != null and orderCost >= 0">AND order_cost = #{orderCost}</if>
+            <if test="orderState != null and orderState >= 0">AND order_state = #{orderState}</if>
+            <if test="gmtCreate != null and gmtCreate != ''">AND gmt_create >= #{gmtCreate}</if>
+            <if test="gmtModified != null and gmtModified != ''">AND gmt_modified >= #{gmtModified}</if>
+        </where>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset},#{limit}
+        </if>
+    </select>
 </mapper>

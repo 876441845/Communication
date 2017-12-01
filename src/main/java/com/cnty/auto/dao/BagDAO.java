@@ -1,6 +1,6 @@
 package com.cnty.auto.dao;
 
-import com.cnty.auto.pojo.Order;
+import com.cnty.auto.pojo.Bag;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,5 +13,5 @@ import org.springframework.stereotype.Repository;
  * Description:
  */
 @Repository
-public interface BagDAO extends BaseDAO<Order> {
+public interface BagDAO extends BaseDAO<Bag> {
 }

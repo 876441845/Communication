@@ -27,7 +27,7 @@ public class Goods {
     /**
      * 商品价格
      */
-    private double goodsPrice;
+    private Double goodsPrice;
     /**
      * 商品兑换所需积分
      */
