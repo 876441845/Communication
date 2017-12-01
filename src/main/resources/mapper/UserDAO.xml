@@ -20,12 +20,18 @@
             <if test="userPassword != null and userPassword != ''">
                 user_password = #{userPassword},
             </if>
+            <if test="userPoint != null and userPoint >= 0">
+                user_point = #{userPoint},
+            </if>
+            <if test="bagNum != null and bagNum >= 0">
+                bag_num = #{bagNum},
+            </if>
         </set>
         WHERE user_id = #{userId}
     </update>
 
     <select id="select" parameterType="map" resultType="User">
-        SELECT user_id,user_card_id,user_password FROM user
+        SELECT user_id,user_card_id,user_password,user_point,bag_num FROM user
         <where>
             <if test="userId != null and userId != 0">
                 AND user_id = #{userId}
@@ -35,6 +41,12 @@
             </if>
             <if test="userName != null and userName != ''">
                 AND user_name = #{userName}
+            </if>
+            <if test="userPoint != null and userPoint >= 0">
+                AND user_point >= #{userPoint}
+            </if>
+            <if test="bagNum != null and bagNum >= 0">
+                AND bag_num = #{bagNum}
             </if>
         </where>
         <if test="offset != null and limit != null">
