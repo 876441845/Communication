@@ -32,5 +32,13 @@ public class User {
      * 用户密码
      */
     private String userPassword;
+    /**
+     * 用户积分
+     */
+    private double userPoint;
+    /**
+     * 用户每月剩余垃圾袋
+     */
+    private int bagNum;
 
 }
