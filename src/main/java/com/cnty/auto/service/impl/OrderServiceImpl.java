@@ -1,9 +1,7 @@
 package com.cnty.auto.service.impl;
 
-import com.cnty.auto.dao.GoodsDAO;
 import com.cnty.auto.dao.OrderDAO;
 import com.cnty.auto.pojo.Order;
-import com.cnty.auto.pojo.User;
 import com.cnty.auto.service.OrderService;
 import org.springframework.stereotype.Service;
 
