@@ -14,7 +14,7 @@
     <update id="update" parameterType="Machine">
         UPDATE machine
         <set>
-            <if test="machineType != null and machineType >= 0">machine_type = #{machineType},</if>
+            <if test="machineType != null and machineType != ''">machine_type = #{machineType},</if>
             <if test="machineLocation != null and machineLocation != ''">machine_location = #{machineLocation},</if>
         </set>
         WHERE machine_id = #{machineId}
@@ -23,7 +23,7 @@
     <select id="select" parameterType="map" resultType="Machine">
         SELECT machine_id,machine_type,machine_location FROM machine
         <where>
-            <if test="machineId != null and machineId >= 0">AND machine_id = #{machineId}</if>
+            <if test="machineId != null and machineId != ''">AND machine_id = #{machineId}</if>
             <if test="machineType != null and machineType >= 0">AND machine_type = #{machineType}</if>
             <if test="machineLocation != null and machineLocation != ''">AND machine_location = #{machineLocation}</if>
         </where>

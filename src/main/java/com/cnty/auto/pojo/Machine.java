@@ -19,7 +19,7 @@ public class Machine {
     /**
      * 机器ID
      */
-    private Integer machineId;
+    private String machineId;
     /**
      * 机器类型
      */

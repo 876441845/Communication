@@ -28,10 +28,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int saveOrder(Order order) {
-        String id = order.getOrderId();
+        String orderId = order.getOrderId();
         // 查询orderId是否存在
         Map<String,Object> condition = new HashMap<>(16);
-        condition.put("orderId", id);
+        condition.put("orderId", orderId);
         List<Order> result = orderDAO.select(condition);
         if (result != null && result.size()>0) {
             return orderDAO.update(order);
