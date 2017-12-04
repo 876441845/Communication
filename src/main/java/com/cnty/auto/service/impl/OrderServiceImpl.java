@@ -29,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int saveOrder(Order order) {
         String id = order.getOrderId();
+        // 查询orderId是否存在
         Map<String,Object> condition = new HashMap<>(16);
         condition.put("orderId", id);
         List<Order> result = orderDAO.select(condition);
