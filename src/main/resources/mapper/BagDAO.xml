@@ -22,7 +22,7 @@
     <select id="select" parameterType="map" resultType="Bag">
         SELECT bag_id, bag_type, bag_weight, user_id, bind_time, gmt_create, gmt_modified FROM bag
         <where>
-            <if test="bagId != null and bagId > 0">AND bag_id = #{bagId}</if>
+            <if test="bagId != null and bagId != ''">AND bag_id = #{bagId}</if>
             <if test="bagType != null and bagType >= 0">AND bag_type = #{bagType}</if>
             <if test="bagWeight != null and bagWeight >= 0">AND bag_weight = #{bagWeight}</if>
             <if test="userId != null and userId >= 0">AND user_id = #{userId}</if>

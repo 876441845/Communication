@@ -21,7 +21,7 @@ public class Bag {
     /**
      * 垃圾袋编号
      */
-    private Long bagId;
+    private String bagId;
     /**
      * 垃圾袋了类型
      */
