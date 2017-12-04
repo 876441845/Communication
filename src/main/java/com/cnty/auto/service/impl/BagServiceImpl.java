@@ -28,9 +28,9 @@ public class BagServiceImpl implements BagService {
 
     @Override
     public int saveBag(Bag bag) {
-        Long id = bag.getBagId();
+        String id = bag.getBagId();
         // 判断id的存在与否,决定是insert,还是update
-        if (id != null && id > 0) {
+        if (id != null && !"".equals(id)) {
             return bagDAO.update(bag);
         }
         bag.setGmtCreate(new Date());
@@ -43,7 +43,7 @@ public class BagServiceImpl implements BagService {
     }
 
     @Override
-    public Bag findBagById(Long bagId) {
+    public Bag findBagById(String bagId) {
         Map<String, Object> condition = new HashMap<>(16);
         condition.put("bagId", bagId);
         List<Bag> bagList = bagDAO.select(condition);
@@ -51,7 +51,7 @@ public class BagServiceImpl implements BagService {
     }
 
     @Override
-    public int deleteBag(Long bagId) {
+    public int deleteBag(String bagId) {
         return bagDAO.delete(bagId);
     }
 }

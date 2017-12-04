@@ -38,7 +38,7 @@ public interface BagService {
      * @param bagId
      * @return
      */
-    Bag findBagById(Long bagId);
+    Bag findBagById(String bagId);
 
     /**
      * 删除Bag
@@ -46,5 +46,5 @@ public interface BagService {
      * @param bagId
      * @return
      */
-    int deleteBag(Long bagId);
+    int deleteBag(String bagId);
 }
