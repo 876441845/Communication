@@ -1,9 +1,7 @@
 package com.cnty.auto.service.impl;
 
-import com.cnty.auto.dao.GoodsDAO;
 import com.cnty.auto.dao.OrderDAO;
 import com.cnty.auto.pojo.Order;
-import com.cnty.auto.pojo.User;
 import com.cnty.auto.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -31,20 +29,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public int saveOrder(Order order) {
         String id = order.getOrderId();
-        if (id != null) {
+        Map<String,Object> condition = new HashMap<>(16);
+        condition.put("orderId", id);
+        List<Order> result = orderDAO.select(condition);
+        if (result != null && result.size()>0) {
             return orderDAO.update(order);
         }
-        // 生成订单号
-        Random random = new Random();
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.now(), ZoneId.systemDefault());
-        id = localDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS"));
-        StringBuilder sb = new StringBuilder(id);
-        int loopTimes = 6;
-        for (int i = 0; i < loopTimes; i++) {
-            sb.append(random.nextInt(10));
-        }
-        // 不考虑可能重复的概率[极其低]
-        order.setOrderId(sb.toString());
         order.setGmtCreate(new Date());
         return orderDAO.insert(order);
     }

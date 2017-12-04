@@ -39,7 +39,7 @@ public class Order {
      */
     private Double orderCost;
     /**
-     * 订单花费
+     * 订单状态
      */
     private Integer orderState;
     /**

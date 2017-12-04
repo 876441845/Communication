@@ -2,7 +2,6 @@ package com.cnty.auto.service.impl;
 
 import com.cnty.auto.dao.BagDAO;
 import com.cnty.auto.pojo.Bag;
-import com.cnty.auto.pojo.Order;
 import com.cnty.auto.service.BagService;
 import org.springframework.stereotype.Service;
 

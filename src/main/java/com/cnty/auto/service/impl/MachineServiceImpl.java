@@ -2,7 +2,6 @@ package com.cnty.auto.service.impl;
 
 import com.cnty.auto.dao.MachineDAO;
 import com.cnty.auto.pojo.Machine;
-import com.cnty.auto.pojo.Role;
 import com.cnty.auto.service.MachineService;
 import org.springframework.stereotype.Service;
 
