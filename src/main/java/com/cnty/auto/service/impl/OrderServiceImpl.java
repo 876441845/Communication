@@ -35,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
         if (result != null && result.size()>0) {
             return orderDAO.update(order);
         }
+        order.setOrderState(0);
         order.setGmtCreate(new Date());
         return orderDAO.insert(order);
     }
