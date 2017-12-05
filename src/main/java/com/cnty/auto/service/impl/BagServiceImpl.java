@@ -27,9 +27,12 @@ public class BagServiceImpl implements BagService {
 
     @Override
     public int saveBag(Bag bag) {
-        String id = bag.getBagId();
+        String bagId = bag.getBagId();
         // 判断id的存在与否,决定是insert,还是update
-        if (id != null && !"".equals(id)) {
+        Map<String,Object> condition = new HashMap<>(16);
+        condition.put("bagId", bagId);
+        List<Bag> result = bagDAO.select(condition);
+        if (result != null && result.size() > 0) {
             return bagDAO.update(bag);
         }
         bag.setGmtCreate(new Date());
