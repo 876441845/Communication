@@ -31,7 +31,7 @@
     </update>
 
     <select id="select" parameterType="map" resultType="User">
-        SELECT user_id,user_card_id,user_password,user_point,bag_num FROM user
+        SELECT user_id,user_card_id,user_name,user_password,user_point,bag_num FROM user
         <where>
             <if test="userId != null and userId != 0">
                 AND user_id = #{userId}
