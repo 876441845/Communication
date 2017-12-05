@@ -38,7 +38,7 @@ public interface MachineService {
      * @param machineId
      * @return
      */
-    Machine findMachineById(String machineId);
+    Machine findMachineById(int machineId);
 
     /**
      * 删除机器信息
@@ -46,6 +46,6 @@ public interface MachineService {
      * @param machineId
      * @return
      */
-    int deleteMachine(String machineId);
+    int deleteMachine(int machineId);
 
 }

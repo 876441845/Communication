@@ -3,7 +3,7 @@
 <mapper namespace="com.cnty.auto.dao.MachineDAO">
 
     <insert id="insert" parameterType="Machine">
-        INSERT INTO machine (machine_type, machine_location) VALUES (#{machineType}, #{machineLocation})
+        INSERT INTO machine (machine_no, machine_type, machine_location) VALUES (#{machineNo}, #{machineType}, #{machineLocation})
     </insert>
 
     <delete id="delete">
@@ -14,16 +14,18 @@
     <update id="update" parameterType="Machine">
         UPDATE machine
         <set>
-            <if test="machineType != null and machineType != ''">machine_type = #{machineType},</if>
+            <if test="machineNo != null and machineNo != ''">machine_no = #{machineNo},</if>
+            <if test="machineType != null and machineType >= 0">machine_type = #{machineType},</if>
             <if test="machineLocation != null and machineLocation != ''">machine_location = #{machineLocation},</if>
         </set>
         WHERE machine_id = #{machineId}
     </update>
 
     <select id="select" parameterType="map" resultType="Machine">
-        SELECT machine_id,machine_type,machine_location FROM machine
+        SELECT machine_id,machine_no,machine_type,machine_location FROM machine
         <where>
-            <if test="machineId != null and machineId != ''">AND machine_id = #{machineId}</if>
+            <if test="machineId != null and machineId > 0">AND machine_id = #{machineId}</if>
+            <if test="machineNo != null and machineNo != ''">AND machine_no = #{machineNo}</if>
             <if test="machineType != null and machineType >= 0">AND machine_type = #{machineType}</if>
             <if test="machineLocation != null and machineLocation != ''">AND machine_location = #{machineLocation}</if>
         </where>
