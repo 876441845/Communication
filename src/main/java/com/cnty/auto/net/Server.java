@@ -33,7 +33,7 @@ public class Server {
     /**
      * 构造方法
      */
-    private Server() {
+    public Server() {
         try {
             int port = 8001;
             serverSocket = new ServerSocket(port);
@@ -47,7 +47,7 @@ public class Server {
     /**
      * 启动，侦听客户端 v2afr
      */
-    private void start() {
+    public void start() {
         //noinspection InfiniteLoopStatement
         while (true) {
             Socket socket;
@@ -64,6 +64,6 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        new Server().start();
+        // Server().start();
     }
 }

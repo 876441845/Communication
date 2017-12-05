@@ -1,8 +1,11 @@
 package com.cnty.auto;
 
+import com.cnty.auto.net.Server;
+import com.cnty.auto.utils.SpringContextUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -19,6 +22,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan("com.cnty.auto.dao")
 public class AutoSaleApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(AutoSaleApplication.class, args);
+		ApplicationContext app = SpringApplication.run(AutoSaleApplication.class, args);
+		SpringContextUtil.setApplicationContext(app);
+		new Server().start();
 	}
 }
