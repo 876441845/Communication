@@ -6,11 +6,10 @@ import com.cnty.auto.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,9 +27,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public int saveOrder(Order order) {
-        String id = order.getOrderId();
+        String orderId = order.getOrderId();
+        // 查询orderId是否存在
         Map<String,Object> condition = new HashMap<>(16);
-        condition.put("orderId", id);
+        condition.put("orderId", orderId);
         List<Order> result = orderDAO.select(condition);
         if (result != null && result.size()>0) {
             return orderDAO.update(order);

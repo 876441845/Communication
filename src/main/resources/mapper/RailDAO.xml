@@ -22,7 +22,7 @@
     <select id="select" parameterType="map" resultType="Rail">
         SELECT rail_id,machine_id,goods_id,goods_num FROM rail
         <where>
-            <if test="machineId != null and machineId > 0">AND machine_id = #{machineId}</if>
+            <if test="machineId != null and machineId != ''">AND machine_id = #{machineId}</if>
             <if test="goodsId != null and goodsId > 0">AND goods_id = #{goodsId}</if>
             <if test="goodsNum != null and goodsNum >= 0">AND goods_num = #{goodsNum}</if>
         </where>

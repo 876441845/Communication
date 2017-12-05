@@ -26,8 +26,12 @@ public class MachineServiceImpl implements MachineService {
 
     @Override
     public int saveMachine(Machine machine) {
-        Integer machineId = machine.getMachineId();
-        if (machineId != null) {
+        String machineId = machine.getMachineId();
+        // 判断machineId是否存在
+        Map<String,Object> condition = new HashMap<>(16);
+        condition.put("machineId", machineId);
+        List<Machine> result = machineDAO.select(condition);
+        if (result != null && result.size()>0) {
             return machineDAO.update(machine);
         }
         return machineDAO.insert(machine);
@@ -39,7 +43,7 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public Machine findMachineById(Integer machineId) {
+    public Machine findMachineById(String machineId) {
         Map<String, Object> condition = new HashMap<>(16);
         condition.put("machineId", machineId);
         List<Machine> machineList = machineDAO.select(condition);
@@ -47,7 +51,7 @@ public class MachineServiceImpl implements MachineService {
     }
 
     @Override
-    public int deleteMachine(Integer machineId) {
+    public int deleteMachine(String machineId) {
         return machineDAO.delete(machineId);
     }
 }
