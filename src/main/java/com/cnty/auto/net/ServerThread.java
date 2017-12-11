@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -32,7 +33,6 @@ public class ServerThread implements Runnable {
     private GoodsService goodsService;
     private MachineService machineService;
     private RailService railService;
-    private Map<String,Object> map;
 
     /**
      * 构造方法
@@ -82,7 +82,7 @@ public class ServerThread implements Runnable {
                     result = "@" + type + no + ":R";
                     //机器信息
                     Machine machine = null;
-                    map = new HashMap(1024);
+                    Map<String, Object> map = new HashMap<>(1024);
                     map.put("machineNo", no);
                     if ("TYZ".equals(type)) {
                         map.put("machineType", Dict.TYZ);
@@ -109,6 +109,8 @@ public class ServerThread implements Runnable {
                     String cmdL = null;
                     //兑换机货道
                     Integer cmdM;
+                    //用户二维码信息
+                    String cmdN = null;
                     //垃圾类别
                     Integer cmdO;
                     //密码
@@ -158,6 +160,7 @@ public class ServerThread implements Runnable {
                                             break;
                                         case "N":
                                             //判断是否为用户卡号
+                                            cmdN = value;
                                             if ("00".equals(value.substring(0, 2))) {
                                                 // 判断是否存在用户
                                                 user = userService.findUserByCardId(value);
@@ -167,11 +170,7 @@ public class ServerThread implements Runnable {
                                                     //获取用户id
                                                     userId = user.getUserId();
                                                     //判断是否为发袋机
-                                                    if ("TYF".equals(type)) {
-                                                        result += ("," + key + value);
-                                                    } else if ("TYD".equals(type)) {
-                                                        result += ("," + key + value);
-                                                    } else if ("TYZ".equals(type)) {
+                                                    if ("TYZ".equals(type)) {
                                                         cmdO = 0;
                                                         result += (",R0,O" + cmdO + ",I" + userId + "," + key + value);
                                                     }
@@ -307,7 +306,7 @@ public class ServerThread implements Runnable {
                                         map.put("bagId",cmdL);
                                         List<Bag> bagList = bagService.findBag(map);
                                         if(bagList.size()>0){
-                                            result += (",R1,L" + cmdL);
+                                            result += (",R1,N"+cmdN+",L" + cmdL);
                                         }else {
                                             Bag bag = new Bag();
                                             if ("0".equals(cmdL.substring(0, 1))) {
@@ -319,7 +318,7 @@ public class ServerThread implements Runnable {
                                             bag.setBagId(cmdL);
                                             bag.setBindTime(new Date());
                                             bagService.saveBag(bag);
-                                            result += (",R0,L" + cmdL);
+                                            result += (",R0,N"+cmdN+",L" + cmdL);
                                         }
                                     }
                                     if (userId != null && cmdL == null && cmdK != null) {
@@ -327,7 +326,7 @@ public class ServerThread implements Runnable {
                                             //添加用户领取垃圾袋记录
                                             user.setBagNum(user.getBagNum() + cmdQ);
                                             userService.saveUser(user);
-                                            result += (",R0,K" + cmdK);
+                                            result += (",R0,N"+cmdN+",K" + cmdK);
                                         } else if (cmdV != null) {
                                             if (orderService.findOrderById(cmdV) == null) {
                                                 //数据库垃圾袋数量进行修改
@@ -350,9 +349,9 @@ public class ServerThread implements Runnable {
                                                 order.setOrderCost(goods.getGoodsCostPoints() * Math.abs(cmdQ) * 1.0);
                                                 orderService.saveOrder(order);
                                             }
-                                            result += (",R0,V" + cmdV);
+                                            result += (",R0,N"+cmdN+",V" + cmdV);
                                         } else if (cmdK != null) {
-                                            result += (",R0,K" + cmdK);
+                                            result += (",R0,N"+cmdN+",K" + cmdK);
                                         }
                                     }
                                     //补货员登录
@@ -383,8 +382,6 @@ public class ServerThread implements Runnable {
                                             }
                                         }
                                         result += (",R0");
-                                    }else{
-                                        result += (",R1");
                                     }
                                 } else if ("B".equals(action)) {
                                     if (cmdK != null && cmdQ != null) {
@@ -429,11 +426,11 @@ public class ServerThread implements Runnable {
                             }
                         }
                         result += ";";
-                        //if (isOk) {
-                        //请求成功
-                        //} else {
-                        //请求失败
-                        //}
+                        if (isOk) {
+                            //请求成功
+                        } else {
+                            //请求失败
+                        }
                         //添加通讯日志
                         if ("A".equals(action)) {
                             pw.println(result + "\n");
@@ -454,6 +451,7 @@ public class ServerThread implements Runnable {
             reader.close();
             in.close();
         } catch (IOException e) {
+            Thread.interrupted();
             e.printStackTrace();
         }
     }
