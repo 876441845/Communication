@@ -108,7 +108,7 @@ public class ServerThread implements Runnable {
                     //垃圾袋编号
                     String cmdL = null;
                     //兑换机货道
-                    Integer cmdM;
+                    Integer cmdM = null;
                     //用户二维码信息
                     String cmdN = null;
                     //垃圾类别
@@ -133,6 +133,7 @@ public class ServerThread implements Runnable {
                     String cmdY;
                     //总积分
                     Double cmdZ = null;
+                    List<Integer> listM = new ArrayList<>();
                     List<Integer> listK = new ArrayList<>();
                     List<Integer> listQ = new ArrayList<>();
                     //操作是否成功
@@ -157,6 +158,7 @@ public class ServerThread implements Runnable {
                                             break;
                                         case "M":
                                             cmdM = Integer.parseInt(value);
+                                            listM.add(Integer.parseInt(value));
                                             break;
                                         case "N":
                                             //判断是否为用户卡号
@@ -298,6 +300,19 @@ public class ServerThread implements Runnable {
                                 break;
                         }
                         if (isOk) {
+                            //补货员登录
+                            if (cmdU != null && cmdP != null) {
+                                //判断账户密码是否正确
+                                Map<String, Object> userMap = new HashMap<>(1024);
+                                userMap.put("userName", cmdU);
+                                userMap.put("userPassword", cmdP);
+                                List<User> userList = userService.findUser(userMap);
+                                if (userList.size() > 0) {
+                                    result += (",R0,U" + cmdU);
+                                } else {
+                                    result += (",R1");
+                                }
+                            }
                             if ("TYF".equals(type)) {
                                 if ("A".equals(action)) {
                                     if (userId != null && cmdL != null) {
@@ -354,19 +369,6 @@ public class ServerThread implements Runnable {
                                             result += (",R0,N"+cmdN+",K" + cmdK);
                                         }
                                     }
-                                    //补货员登录
-                                    if (cmdU != null && cmdP != null) {
-                                        //判断账户密码是否正确
-                                        Map<String, Object> userMap = new HashMap<>(1024);
-                                        userMap.put("userName", cmdU);
-                                        userMap.put("userPassword", cmdP);
-                                        List<User> userList = userService.findUser(userMap);
-                                        if (userList.size() > 0) {
-                                            result += (",R0,U" + cmdU);
-                                        } else {
-                                            result += (",R1");
-                                        }
-                                    }
                                     //申请补货
                                     if (cmdU != null && cmdK != null && cmdQ != null && listK.size()==listQ.size() && listK.size()>0) {
                                         //修改发袋机对应种类垃圾袋库存
@@ -389,24 +391,53 @@ public class ServerThread implements Runnable {
                                     }
                                 }
                             } else if ("TYD".equals(type)) {
-                                if (cmdS != null) {
-                                    //更新智能设备状态信息
+                                if (cmdS != null && "A".equals(action)) {
+                                    if("5".equals(cmdS)){
+                                        map = new HashMap<>(1024);
+                                        map.put("machineId",machine.getMachineId());
+                                        List<Rail> railList = railService.findRail(map);
+                                        for(Rail rail:railList){
+                                            result += (",R0,M"+rail.getRailId()+",Q"+rail.getGoodsNum());
+                                        }
+                                    }
                                 }
-                                if (userId != null && cmdW != null) {
+                                if (userId != null && cmdM != null && cmdV == null) {
                                     // 根据兑换机改货道商品所需商品积分是否足够
-                                    //if () {
+                                    Rail rail = railService.findRailById(cmdM,machine.getMachineId());
+                                    Goods goods = goodsService.findGoodsById(rail.getGoodsId());
+                                    if (user.getUserPoint()>=goods.getGoodsCostPoints()) {
+                                        result += (",R0,N"+cmdN+",M"+cmdM);
+                                    } else{
+                                        result += (",R1,N"+cmdN+",M"+cmdM);
+                                        isOk = false;
+                                    }
+                                }else if(userId != null && cmdM != null && cmdV != null && cmdQ != null){
+                                    if (orderService.findOrderById(cmdV)==null){
+                                        Rail rail = railService.findRailById(cmdM,machine.getMachineId());
+                                        Goods goods = goodsService.findGoodsById(rail.getGoodsId());
+                                        Order order = new Order();
+                                        order.setUserId(userId);
+                                        order.setOrderId(cmdV);
+                                        order.setGoodsId(cmdM);
+                                        order.setGoodsNum(Math.abs(cmdQ));
+                                        order.setOrderCost(goods.getGoodsCostPoints() * Math.abs(cmdQ) * 1.0);
+                                        orderService.saveOrder(order);
+                                        user.setUserPoint(user.getUserPoint()-order.getOrderCost());
+                                        userService.saveUser(user);
+                                    }
+                                    result += (",R0,V"+cmdV);
+                                }
+                                //申请补货
+                                if (cmdU != null && cmdM != null && cmdQ != null && listM.size()==listQ.size() && listM.size()>0) {
+                                    //修改兑换机对应种类垃圾袋库存
+                                    for(int i=0;i<listM.size();i++) {
+                                        Rail rail = railService.findRailById(listM.get(i),machine.getMachineId());
+                                        if (rail != null) {
+                                            rail.setGoodsNum(rail.getGoodsNum() + listQ.get(i));
+                                            railService.saveRail(rail);
+                                        }
+                                    }
                                     result += (",R0");
-                                    //计算总积分
-                                    cmdZ -= cmdJ;
-                                    //更新总积分
-                                    // 订单编号 用户id 商品id 数量 总价 订单状态
-                                    // 根据时间生成 userId cmdW 1 cmdJ 8
-                                    // 将数据保存至订单表
-                                    //} else {
-                                    result += (",R1");
-                                    isOk = false;
-                                    //}
-                                    result += (",cmdJ" + cmdJ + ",cmdZ" + cmdZ);
                                 }
                             } else if ("TYZ".equals(type)) {
                                 if (cmdS != null) {
