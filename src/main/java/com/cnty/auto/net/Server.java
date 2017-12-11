@@ -1,5 +1,8 @@
 package com.cnty.auto.net;
 
+import com.cnty.auto.pojo.Rail;
+import com.cnty.auto.service.RailService;
+import com.cnty.auto.utils.SpringContextUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 

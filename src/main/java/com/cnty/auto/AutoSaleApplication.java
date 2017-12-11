@@ -1,6 +1,8 @@
 package com.cnty.auto;
 
 import com.cnty.auto.net.Server;
+import com.cnty.auto.pojo.Rail;
+import com.cnty.auto.service.RailService;
 import com.cnty.auto.utils.SpringContextUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
